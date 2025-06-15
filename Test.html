@@ -1,224 +1,224 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AWS Cloud Practitioner Mock Test</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AWS Cloud Practitioner Mock Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
 
-    body {
-      font-family: 'Inter', sans-serif;
-      overflow: hidden;
-      background: linear-gradient(to bottom right, #e0f2f7, #c1e4f4);
-    }
+        body {
+            font-family: 'Inter', sans-serif;
+            /* overflow: hidden; Removed this, as it can cause issues on mobile with virtual keyboards or content that needs to scroll */
+            background: linear-gradient(to bottom right, #e0f2f7, #c1e4f4);
+            min-height: 100vh; /* Ensure body takes full viewport height */
+            display: flex;
+            flex-direction: column; /* Allow content to stack and footer to push to bottom */
+        }
 
-    .animate-fade-in {
-      animation: fadeIn 0.5s ease-out forwards;
-    }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-    .fullscreen-exit-overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background-color: rgba(0, 0, 0, 0.7);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
-    }
+        .fullscreen-exit-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
 
-    .fullscreen-exit-overlay.show {
-      opacity: 1;
-      visibility: visible;
-    }
+        .fullscreen-exit-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
 
-    .fullscreen-exit-modal {
-      background-color: white;
-      padding: 30px;
-      border-radius: 10px;
-      text-align: center;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      max-width: 400px;
-      width: 90%;
-    }
+        .fullscreen-exit-modal {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 90%;
+        }
 
-    .question-number-btn {
-      background-color: #cbd5e1;
-      color: #4a5568;
-    }
+        .question-number-btn {
+            background-color: #cbd5e1;
+            color: #4a5568;
+            transition: background-color 0.2s, color 0.2s, border-color 0.2s; /* Add transition for smoothness */
+        }
 
-    .question-number-btn.answered {
-      background-color: #90cdf4;
-      color: #2b6cb0;
-    }
+        .question-number-btn.answered {
+            background-color: #90cdf4;
+            color: #2b6cb0;
+        }
 
-    .question-number-btn.marked-for-review {
-      background-color: #f6ad55;
-      color: #8b5420;
-    }
+        .question-number-btn.marked-for-review {
+            background-color: #f6ad55;
+            color: #8b5420;
+        }
 
-    .question-number-btn.current {
-      background-color: #3182ce;
-      color: white;
-      font-weight: bold;
-      border: 2px solid #a0aec0;
-    }
+        .question-number-btn.current {
+            background-color: #3182ce;
+            color: white;
+            font-weight: bold;
+            border: 2px solid #a0aec0;
+        }
 
-    .color-swatch {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      border-radius: 4px;
-      vertical-align: middle;
-      margin-right: 6px;
-      border: 1px solid rgba(0,0,0,0.1);
-    }
+        .color-swatch {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            vertical-align: middle;
+            margin-right: 6px;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
 
-    .swatch-unanswered { background-color: #cbd5e1; }
-    .swatch-answered { background-color: #90cdf4; }
-    .swatch-marked { background-color: #f6ad55; }
-    .swatch-current { background-color: #3182ce; }
+        .swatch-unanswered { background-color: #cbd5e1; }
+        .swatch-answered { background-color: #90cdf4; }
+        .swatch-marked { background-color: #f6ad55; }
+        .swatch-current { background-color: #3182ce; }
 
-    .custom-message-box {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      z-index: 1001;
-      text-align: center;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
-    }
+        .custom-message-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 1001;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
 
-    .custom-message-box.show {
-      opacity: 1;
-      visibility: visible;
-    }
+        .custom-message-box.show {
+            opacity: 1;
+            visibility: visible;
+        }
 
-    .custom-message-box .message-content {
-      font-size: 1rem;
-      margin-bottom: 15px;
-      color: #333;
-    }
+        .custom-message-box .message-content {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            color: #333;
+        }
 
-    .custom-message-box .close-btn {
-      background-color: #3b82f6;
-      color: white;
-      padding: 8px 15px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.2s ease;
-    }
+        .custom-message-box .close-btn {
+            background-color: #3b82f6;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
 
-    .custom-message-box .close-btn:hover {
-      background-color: #2563eb;
-    }
-  </style>
+        .custom-message-box .close-btn:hover {
+            background-color: #2563eb;
+        }
+    </style>
 </head>
 
-<body class="min-h-screen flex flex-col items-center justify-start p-4">
+<body class="min-h-screen flex flex-col items-center justify-between p-2 sm:p-4">
 
-  <!-- ✅ HEADER: Logo + Title -->
-  <header class="w-full flex items-center justify-center gap-4 py-4 px-6 bg-white shadow-md rounded-xl mb-6">
-    <img src="./ChatGPT Image Jun 15, 2025, 03_58_04 PM.png" alt="AWS Logo" class="w-16 h-16 object-contain" />
-    <h1 class="text-2xl md:text-3xl font-bold text-blue-700 text-center">
-      AWS Cloud Practitioner Mock Test
-    </h1>
-  </header>
+    <header class="w-full flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-2 sm:gap-4 py-2 sm:py-4 px-4 sm:px-6 bg-white shadow-md rounded-xl mb-4 sm:mb-6 max-w-5xl">
+        <img src="./ChatGPT Image Jun 15, 2025, 03_58_04 PM.png" alt="AWS Logo" class="w-12 h-12 sm:w-16 sm:h-16 object-contain" />
+        <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-blue-700 text-center sm:text-left">
+            AWS Cloud Practitioner Mock Test
+        </h1>
+    </header>
 
-  <!-- ✅ START SCREEN -->
-  <div class="bg-white rounded-xl shadow-2xl p-8 max-w-5xl w-full flex flex-col md:flex-row">
-    <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center md:hidden w-full">
-      AWS Cloud Practitioner Mock Test
-    </h1>
+    <div class="bg-white rounded-xl shadow-2xl p-4 sm:p-8 max-w-5xl w-full flex flex-col flex-grow items-center justify-center">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6 hidden md:block w-full text-center">
+            AWS Cloud Practitioner Mock Test
+        </h1>
 
-    <div id="start-screen" class="w-full flex flex-col items-center justify-center p-8 text-center">
-      <h2 class="text-4xl font-extrabold text-blue-700 mb-6 animate-fade-in">
-        Welcome to the AWS Mock Test!
-      </h2>
-      <p class="text-gray-700 text-lg mb-8">
-        Prepare for your certification by taking this practice exam.
-      </p>
-      <div class="w-full max-w-md mb-8">
-        <label for="user-name-input" class="block text-gray-700 text-sm font-bold mb-2">
-          Enter Your Name:
-        </label>
-        <input
-          type="text"
-          id="user-name-input"
-          class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500"
-          placeholder="e.g., John Doe"
-          aria-label="Your Name"
-        />
-      </div>
-      <button
-        id="start-quiz-button"
-        class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg text-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
-      >
-        Start Quiz
-      </button>
-    </div>
+        <div id="start-screen" class="w-full flex flex-col items-center justify-center p-4 text-center">
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-blue-700 mb-6 animate-fade-in">
+                Welcome to the AWS Mock Test!
+            </h2>
+            <p class="text-gray-700 text-base sm:text-lg mb-8">
+                Prepare for your certification by taking this practice exam.
+            </p>
+            <div class="w-full max-w-md mb-8 px-2">
+                <label for="user-name-input" class="block text-gray-700 text-sm font-bold mb-2">
+                    Enter Your Name:
+                </label>
+                <input
+                    type="text"
+                    id="user-name-input"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500"
+                    placeholder="e.g., John Doe"
+                    aria-label="Your Name"
+                />
+            </div>
+            <button
+                id="start-quiz-button"
+                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-lg sm:text-xl transition-all duration-300 transform hover:scale-105 shadow-lg w-auto"
+            >
+                Start Quiz
+            </button>
+        </div>
 
 
-
-
-        <div id="quiz-container" class="flex-grow flex flex-col md:flex-row hidden">
-            <div class="md:w-2/3 p-4 border-r md:border-b-0 border-b border-gray-200">
-                <div class="mb-6">
+        <div id="quiz-container" class="flex-grow flex flex-col md:flex-row hidden w-full">
+            <div class="md:w-2/3 p-3 sm:p-4 md:border-r md:border-b-0 border-b border-gray-200 order-first md:order-none">
+                <div class="mb-4 sm:mb-6">
                     <p class="text-sm text-gray-600 mb-2">
                         Question <span id="current-question-number"></span> of <span id="total-questions"></span>
                     </p>
-                    <div class="w-full bg-gray-200 rounded-full h-2.5">
-                        <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-500 ease-out" style="width: 0%;"></div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div id="progress-bar" class="bg-blue-600 h-2 rounded-full transition-all duration-500 ease-out" style="width: 0%;"></div>
                     </div>
                 </div>
 
-                <h2 id="question-text" class="text-xl font-semibold text-gray-800 mb-6"></h2>
+                <h2 id="question-text" class="text-base sm:text-xl font-semibold text-gray-800 mb-4 sm:mb-6"></h2>
 
-                <div id="options-container" class="space-y-4 mb-6">
-                    </div>
+                <div id="options-container" class="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
+                </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                    <button id="clear-response-button" class="py-2 px-4 rounded-lg font-semibold bg-red-100 text-red-700 border border-red-300 hover:bg-red-200 transition-colors shadow-sm">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6">
+                    <button id="clear-response-button" class="py-2 px-3 sm:px-4 rounded-lg font-semibold bg-red-100 text-red-700 border border-red-300 hover:bg-red-200 transition-colors shadow-sm text-sm sm:text-base">
                         Clear Response
                     </button>
-                    <button id="mark-for-review-button" class="py-2 px-4 rounded-lg font-semibold bg-yellow-100 text-yellow-700 border border-yellow-300 hover:bg-yellow-200 transition-colors shadow-sm">
+                    <button id="mark-for-review-button" class="py-2 px-3 sm:px-4 rounded-lg font-semibold bg-yellow-100 text-yellow-700 border border-yellow-300 hover:bg-yellow-200 transition-colors shadow-sm text-sm sm:text-base">
                         Mark for Review
                     </button>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
-                    <button id="prev-button" class="py-3 px-6 rounded-lg text-lg font-semibold transition-all duration-300 transform shadow-md bg-gray-300 text-gray-600 cursor-not-allowed" disabled>
+                <div class="grid grid-cols-2 gap-3 sm:gap-4">
+                    <button id="prev-button" class="py-2 sm:py-3 px-4 sm:px-6 rounded-lg text-base sm:text-lg font-semibold transition-all duration-300 transform shadow-md bg-gray-300 text-gray-600 cursor-not-allowed" disabled>
                         Previous
                     </button>
-                    <button id="next-button" class="py-3 px-6 rounded-lg text-lg font-semibold transition-all duration-300 transform shadow-md bg-blue-600 text-white hover:bg-blue-700 hover:scale-105" disabled>
+                    <button id="next-button" class="py-2 sm:py-3 px-4 sm:px-6 rounded-lg text-base sm:text-lg font-semibold transition-all duration-300 transform shadow-md bg-blue-600 text-white hover:bg-blue-700 hover:scale-105" disabled>
                         Next Question
                     </button>
                 </div>
             </div>
 
-            <div class="md:w-1/3 p-4 flex flex-col items-center">
-                <h3 class="text-lg font-bold text-gray-700 mb-4">Question Progress</h3>
-                <div id="question-navigation-grid" class="grid grid-cols-4 gap-2 w-full max-w-xs">
-                    </div>
-                <div class="mt-6 p-3 bg-gray-100 rounded-lg text-sm text-gray-700 w-full max-w-xs">
-                    <p class="font-semibold mb-2">Legend:</p>
+            <div class="md:w-1/3 p-3 sm:p-4 flex flex-col items-center order-last md:order-none border-t md:border-t-0 border-gray-200 pt-4 md:pt-0">
+                <h3 class="text-base sm:text-lg font-bold text-gray-700 mb-3 sm:mb-4">Question Progress</h3>
+                <div id="question-navigation-grid" class="grid grid-cols-6 sm:grid-cols-5 md:grid-cols-4 gap-1 sm:gap-2 w-full max-w-md">
+                </div>
+                <div class="mt-4 sm:mt-6 p-2 sm:p-3 bg-gray-100 rounded-lg text-xs sm:text-sm text-gray-700 w-full max-w-md">
+                    <p class="font-semibold mb-1 sm:mb-2">Legend:</p>
                     <div class="flex items-center mb-1">
                         <span class="color-swatch swatch-current"></span> Current Question
                     </div>
@@ -232,18 +232,12 @@
                         <span class="color-swatch swatch-unanswered"></span> Not Answered
                     </div>
                 </div>
-                <button id="final-submit-button" class="w-full mt-6 bg-green-600 text-white py-3 px-6 rounded-lg text-lg font-semibold hover:bg-green-700 transition-all duration-300 transform hover:scale-105 shadow-md">
+                <button id="final-submit-button" class="w-full mt-4 sm:mt-6 bg-green-600 text-white py-2 sm:py-3 px-4 sm:px-6 rounded-lg text-base sm:text-lg font-semibold hover:bg-green-700 transition-all duration-300 transform hover:scale-105 shadow-md">
                     Final Submit
                 </button>
             </div>
         </div>
     </div>
-  <!-- ✅ FOOTER -->
-  <footer class="w-full mt-10 py-6 bg-white shadow-inner text-center text-gray-600 text-sm rounded-t-xl">
-    <p>&copy; 2025 AWSPrepZone – TestPortal. All rights reserved.</p>
-    <p>Designed & Developed by AWSPrepZone</p>
-  </footer>
-</body>
 
     <div id="fullscreen-exit-overlay" class="fullscreen-exit-overlay">
         <div class="fullscreen-exit-modal">
@@ -260,15 +254,12 @@
     <div id="custom-message-box" class="custom-message-box">
         <p class="message-content" id="message-box-content"></p>
         <button class="close-btn" id="message-box-close-btn">OK</button>
-
-          <!-- ✅ FOOTER -->
-  <footer class="w-full mt-10 py-6 bg-white shadow-inner text-center text-gray-600 text-sm rounded-t-xl">
-    <p>&copy; 2025 AWS Mock Test Platform. All rights reserved.</p>
-    <p>Designed & Developed by YourName</p>
-  </footer>
-</body>
-
     </div>
+
+    <footer class="w-full mt-4 py-4 bg-white shadow-inner text-center text-gray-600 text-xs sm:text-sm rounded-t-xl">
+        <p>&copy; 2025 AWS Mock Test Platform. All rights reserved.</p>
+        <p>Designed & Developed by YourName</p>
+    </footer>
 
     <script>
         const API_BASE_URL = window.location.origin; // Dynamically get base URL
@@ -281,6 +272,7 @@
         let markedForReview = []; // Stores boolean for marked questions for the current test's questions
         let score = 0;
         let quizCompleted = false;
+        let userName = ''; // To store the user's name
 
         // Get DOM elements
         const startScreen = document.getElementById('start-screen'); // Added
@@ -310,12 +302,35 @@
          * Displays a custom message box instead of alert.
          * @param {string} message - The message to display.
          * @param {function} [callback] - Optional callback function to execute when OK is clicked.
+         * @param {boolean} [showCancel=false] - If true, displays a cancel button.
+         * @param {function} [cancelCallback] - Optional callback for cancel button.
          */
-        function showCustomMessage(message, callback = null) {
+        function showCustomMessage(message, callback = null, showCancel = false, cancelCallback = null) {
             messageBoxContent.textContent = message;
             customMessageBox.classList.add('show');
-            // Remove previous event listener to prevent multiple calls
+
+            // Clear previous event listeners
             messageBoxCloseBtn.onclick = null;
+            // Remove any existing cancel button if recreating
+            let cancelButton = document.getElementById('message-box-cancel-btn');
+            if (cancelButton) {
+                cancelButton.remove();
+                cancelButton = null;
+            }
+
+            // Create and add cancel button if requested
+            if (showCancel) {
+                cancelButton = document.createElement('button');
+                cancelButton.id = 'message-box-cancel-btn';
+                cancelButton.classList.add('close-btn', 'ml-3', 'bg-gray-500', 'hover:bg-gray-600');
+                cancelButton.textContent = 'Cancel';
+                customMessageBox.appendChild(cancelButton);
+                cancelButton.onclick = () => {
+                    customMessageBox.classList.remove('show');
+                    if (cancelCallback) cancelCallback();
+                };
+            }
+
             messageBoxCloseBtn.onclick = () => {
                 customMessageBox.classList.remove('show');
                 if (callback) callback();
@@ -411,7 +426,6 @@
          */
         function renderQuestion() {
             if (questions.length === 0) {
-                // This might happen if fetchQuestions fails or is not called
                 showCustomMessage('Error: Questions not loaded. Please return to dashboard and try again.', () => {
                     window.location.href = '/home';
                 });
@@ -435,7 +449,7 @@
                 input.id = `option-${index}`;
                 input.name = 'quiz-option';
                 input.value = index;
-                input.classList.add('h-5', 'w-5', 'text-blue-600', 'focus:ring-blue-500', 'border-gray-300', 'rounded-full', 'mt-1');
+                input.classList.add('h-4', 'w-4', 'sm:h-5', 'sm:w-5', 'text-blue-600', 'focus:ring-blue-500', 'border-gray-300', 'rounded-full', 'mt-1');
                 input.addEventListener('change', (e) => {
                     userSelections[currentQuestionIndex] = parseInt(e.target.value);
                     updateNavigationButtons(); // Enable next button when an option is selected
@@ -445,7 +459,7 @@
                 const label = document.createElement('label');
                 label.htmlFor = `option-${index}`;
                 label.textContent = option;
-                label.classList.add('ml-3', 'block', 'text-base', 'font-medium', 'text-gray-700', 'p-2', 'w-full', 'rounded-lg', 'border', 'border-gray-300', 'cursor-pointer', 'hover:bg-gray-50');
+                label.classList.add('ml-3', 'block', 'text-sm', 'sm:text-base', 'font-medium', 'text-gray-700', 'p-2', 'w-full', 'rounded-lg', 'border', 'border-gray-300', 'cursor-pointer', 'hover:bg-gray-50', 'transition-colors');
 
                 // Pre-select if an answer exists for this question
                 if (userSelections[currentQuestionIndex] === index) {
@@ -524,7 +538,7 @@
                 const qNumBtn = document.createElement('button');
                 qNumBtn.textContent = index + 1;
                 qNumBtn.classList.add(
-                    'p-2', 'rounded-lg', 'text-sm', 'font-semibold', 'transition-colors', 'duration-200', 'flex', 'items-center', 'justify-center', 'question-number-btn'
+                    'p-1', 'sm:p-2', 'rounded-lg', 'text-xs', 'sm:text-sm', 'font-semibold', 'transition-colors', 'duration-200', 'flex', 'items-center', 'justify-center', 'question-number-btn'
                 );
 
                 // Apply colors based on status
@@ -599,7 +613,7 @@
             });
 
             const totalQuestions = questions.length;
-            const isPass = score > 5; // Pass if score is greater than 13
+            const isPass = score > 5; // Pass if score is greater than 5 (This threshold seems low, adjust as needed)
 
             const jwtToken = localStorage.getItem('jwtToken');
             if (!jwtToken) {
@@ -620,10 +634,11 @@
                 });
 
                 if (response.ok) {
-                    // Store results in local storage to be picked up by Certificate.html
+                    // Store results in local storage to be picked up by Certificate.html or results page
                     localStorage.setItem('finalScore', score);
                     localStorage.setItem('testPassed', isPass);
                     localStorage.setItem('totalTestQuestions', totalQuestions); // Store total questions for certificate
+                    localStorage.setItem('userName', userName); // Store user name for certificate
                     quizCompleted = true; // Mark quiz as completed
                     exitFullScreen(); // Exit full screen gracefully
 
@@ -661,6 +676,7 @@
             currentQuestionIndex = 0;
             score = 0;
             quizCompleted = false; // Reset quiz completion status
+            userName = ''; // Clear user name too
 
             // Clear current test state
             questions = [];
@@ -680,17 +696,14 @@
         document.addEventListener('DOMContentLoaded', () => {
             // Event listener for the "Start Quiz" button
             startQuizButton.addEventListener('click', () => {
-                const userName = userNameInput.value.trim();
+                userName = userNameInput.value.trim(); // Store user name globally
                 if (userName) {
                     // Hide the start screen and show the quiz container
                     startScreen.classList.add('hidden');
                     quizContainer.classList.remove('hidden');
 
-                    // Set the user's name for potential certificate display
-                    const certificateUserName = document.getElementById('certificate-user-name');
-                    if (certificateUserName) {
-                        certificateUserName.textContent = userName;
-                    }
+                    // No need to set certificateUserName here, as it's for the certificate page
+                    // localStorage.setItem('userName', userName); is done in finalizeQuiz
 
                     initializeQuiz(); // Now, initialize the quiz (fetch questions, enter fullscreen)
                 } else {
@@ -704,8 +717,9 @@
             clearResponseButton.addEventListener('click', handleClearResponse);
             markForReviewButton.addEventListener('click', handleMarkForReview);
             finalSubmitButton.addEventListener('click', () => {
-                showCustomMessage('Are you sure you want to submit the test?', () => {
-                    finalizeQuiz();
+                showCustomMessage('Are you sure you want to submit the test?', finalizeQuiz, true, () => {
+                    // Optional: logic if user cancels submission
+                    console.log("Submission cancelled.");
                 });
             });
             overlayRestartButton.addEventListener('click', handleRestartQuiz);
@@ -714,7 +728,7 @@
             document.addEventListener('fullscreenchange', () => {
                 if (!document.fullscreenElement) { // If exited full screen
                     if (!quizCompleted) { // If quiz was in progress when exited fullscreen
-                         fullscreenExitOverlay.classList.add('show'); // Show overlay
+                        fullscreenExitOverlay.classList.add('show'); // Show overlay
                     }
                 } else {
                     // Entered full screen
