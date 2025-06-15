@@ -1504,8 +1504,12 @@ app.get('/get-certificate-data', authenticateUser, async (req, res) => {
 
 
 
-// --- Server Start ---
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-    console.log(`Access frontend at http://localhost:${PORT}`);
+// // --- Server Start ---
+// app.listen(PORT, () => {
+//     console.log(`Server running on port ${PORT}`);
+//     console.log(`Access frontend at http://localhost:${PORT}`);
+// });
+
+app.listen(5000, '0.0.0.0', () => {
+   console.log('Server running at http://0.0.0.0:5000');
 });
